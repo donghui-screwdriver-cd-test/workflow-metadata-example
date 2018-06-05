@@ -1,0 +1,22 @@
+shared:
+    image: node:6
+
+jobs:
+    # A will set the value of foo to 1
+    A:
+        steps:
+            - set: meta set foo 1
+        requires: [~commit, ~pr]
+
+    # B will get foo and set its value to 2
+    B:
+        steps:
+            - get: meta get foo
+            - set: meta set foo 2
+        requires: [A]
+
+    # C will get the new value of foo
+    C:
+        steps:
+            - get: meta get foo
+        requires: [B]
